@@ -5,7 +5,6 @@ struct RunView: View {
     let onClose: () -> Void
 
     @AppStorage(SoundPlayer.enabledKey) private var soundOn = true
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     /// Frame of the full-screen liquid layer, used to align the text mask with it.
     @State private var liquidFrame: CGRect = .zero
 
@@ -15,8 +14,7 @@ struct RunView: View {
                 DoneView(config: model.config, onClose: onClose)
                     .transition(.opacity)
             } else {
-                // Keeps running while paused so the liquid surface stays alive.
-                TimelineView(.animation) { context in
+                TimelineView(.animation(paused: model.isPaused)) { context in
                     running(at: context.date)
                 }
                 .transition(.opacity)
@@ -49,42 +47,27 @@ struct RunView: View {
     // MARK: - Layers
 
     private func running(at date: Date) -> some View {
-        let waves = surface(at: date)
+        let hill = Hill(level: model.progress(at: date))
         return ZStack {
-            ZStack {
-                waves.back.fill(liquid.opacity(0.45))
-                waves.front.fill(liquid)
-            }
-            .ignoresSafeArea()
-            .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { liquidFrame = $0 }
+            hill.fill(liquid)
+                .ignoresSafeArea()
+                .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { liquidFrame = $0 }
 
             // Neutral content, then the same content in the "on liquid" colours,
             // cut out by the liquid so text and buttons change colour where it covers them.
             content(at: date, fg: .primary, pillText: Color(.systemBackground))
             content(at: date, fg: onLiquid, pillText: liquid)
-                .mask { aligned(waves.front) }
+                .mask { aligned(hill) }
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
         }
     }
 
-    /// Two waves drift against each other; they flatten out at empty and full.
-    private func surface(at date: Date) -> (front: Wave, back: Wave) {
-        let progress = model.progress(at: date)
-        let time = date.timeIntervalSinceReferenceDate
-        let edge = min(1, progress * 14, (1 - progress) * 14)
-        let amplitude = reduceMotion ? 0 : 10 * edge * (model.isPaused ? 0.5 : 1)
-        return (
-            Wave(level: progress, amplitude: amplitude, wavelength: 0.9, phase: time * 2.3),
-            Wave(level: progress, amplitude: amplitude * 0.8, wavelength: 1.3, phase: -time * 1.7 + 1.2)
-        )
-    }
-
     /// Places a full-screen shape inside a mask whose own frame is the safe area.
-    private func aligned(_ wave: Wave) -> some View {
+    private func aligned(_ shape: Hill) -> some View {
         GeometryReader { geo in
             let own = geo.frame(in: .global)
-            wave
+            shape
                 .frame(width: liquidFrame.width, height: liquidFrame.height)
                 .offset(x: liquidFrame.minX - own.minX, y: liquidFrame.minY - own.minY)
         }
@@ -186,20 +169,22 @@ struct RunView: View {
     }
 }
 
-/// Filled area from the bottom up to `level`, with a sine-shaped surface.
-nonisolated struct Wave: Shape {
-    var level: Double        // 0 … 1 of the height
-    var amplitude: Double    // points
-    var wavelength: Double   // in screen widths
-    var phase: Double        // radians
+/// Filled area from the bottom up to `level`, its surface a gently rounded hill.
+/// The hill flattens out when the fill is nearly empty or nearly full.
+nonisolated struct Hill: Shape {
+    var level: Double   // 0 … 1 of the height
 
     func path(in rect: CGRect) -> Path {
+        let peak = 34 * min(1, level * 10, (1 - level) * 10)
+        let base = rect.maxY - rect.height * level
+        // Lift by part of the hill so the visible amount still matches `level`.
+        let y = { (x: Double) -> Double in
+            let u = (x - rect.midX) / (rect.width * 0.42)
+            return base + peak * 0.4 - peak * exp(-u * u)
+        }
         var path = Path()
-        let surface = rect.maxY - rect.height * level
-        let k = 2 * Double.pi / (rect.width * wavelength)
         path.move(to: CGPoint(x: rect.minX, y: rect.maxY))
-        let y = { (x: Double) in surface + amplitude * sin(k * (x - rect.minX) + phase) }
-        for x in stride(from: rect.minX, to: rect.maxX, by: 6) {
+        for x in stride(from: rect.minX, to: rect.maxX, by: 4) {
             path.addLine(to: CGPoint(x: x, y: y(x)))
         }
         path.addLine(to: CGPoint(x: rect.maxX, y: y(rect.maxX)))
