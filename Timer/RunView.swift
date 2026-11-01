@@ -5,8 +5,6 @@ struct RunView: View {
     let onClose: () -> Void
 
     @AppStorage(SoundPlayer.enabledKey) private var soundOn = true
-    /// Frame of the full-screen liquid layer, used to align the text mask with it.
-    @State private var liquidFrame: CGRect = .zero
 
     var body: some View {
         ZStack {
@@ -46,31 +44,19 @@ struct RunView: View {
 
     // MARK: - Layers
 
+    /// The fill sits behind the content; a second copy of the content in the
+    /// "on liquid" colours is cut out by the same shape, so text and buttons change
+    /// colour where the fill covers them. Both use the same frame, nothing is measured.
     private func running(at date: Date) -> some View {
         let hill = Hill(level: model.progress(at: date))
         return ZStack {
-            hill.fill(liquid)
-                .ignoresSafeArea()
-                .onGeometryChange(for: CGRect.self) { $0.frame(in: .global) } action: { liquidFrame = $0 }
-
-            // Neutral content, then the same content in the "on liquid" colours,
-            // cut out by the liquid so text and buttons change colour where it covers them.
             content(at: date, fg: .primary, pillText: Color(.systemBackground))
             content(at: date, fg: onLiquid, pillText: liquid)
-                .mask { aligned(hill) }
+                .mask { hill.ignoresSafeArea() }
                 .allowsHitTesting(false)
                 .accessibilityHidden(true)
         }
-    }
-
-    /// Places a full-screen shape inside a mask whose own frame is the safe area.
-    private func aligned(_ shape: Hill) -> some View {
-        GeometryReader { geo in
-            let own = geo.frame(in: .global)
-            shape
-                .frame(width: liquidFrame.width, height: liquidFrame.height)
-                .offset(x: liquidFrame.minX - own.minX, y: liquidFrame.minY - own.minY)
-        }
+        .background { hill.fill(liquid).ignoresSafeArea() }
     }
 
     private func content(at date: Date, fg: Color, pillText: Color) -> some View {

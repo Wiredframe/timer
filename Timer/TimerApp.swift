@@ -36,12 +36,13 @@ struct RootView: View {
         }
         .animation(.smooth(duration: 0.35), value: workout != nil)
         #if DEBUG
-        .onAppear {
-            // Simulator demo: launch with -demo to start a short workout right away.
-            if ProcessInfo.processInfo.arguments.contains("-demo") {
-                sound.start()
-                workout = WorkoutModel(config: .init(sets: 2, work: 5, rest: 5, skipLastRest: true), sound: sound)
-            }
+        .task {
+            // Simulator demo: launch with -demo to start a short workout after a moment,
+            // with the same slide-in transition as a tap on the start button.
+            guard ProcessInfo.processInfo.arguments.contains("-demo") else { return }
+            try? await Task.sleep(for: .seconds(1))
+            sound.start()
+            workout = WorkoutModel(config: .init(sets: 2, work: 5, rest: 5, skipLastRest: true), sound: sound)
         }
         #endif
     }
