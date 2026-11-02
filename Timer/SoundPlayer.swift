@@ -21,6 +21,10 @@ final class SoundPlayer {
     private var observers: [Task<Void, Never>] = []
 
     init() {
+        // Set the mixing category before touching the engine: building the graph
+        // creates the output node, which would otherwise activate the default
+        // solo-ambient session and pause music in other apps right at launch.
+        Self.configureSession()
         engine.attach(player)
         try? engine.connectNode(player, to: engine.mainMixerNode, format: format)
         for effect in Effect.allCases {
@@ -53,10 +57,14 @@ final class SoundPlayer {
         deactivation?.cancel()
         deactivation = nil
         isActive = true
-        let session = AVAudioSession.sharedInstance()
-        try? session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
-        try? session.setActive(true)
+        Self.configureSession()
+        try? AVAudioSession.sharedInstance().setActive(true)
         startEngine()
+    }
+
+    /// Playback (so sounds work with the silent switch and the screen locked), but mixed with other audio.
+    private static func configureSession() {
+        try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
     }
 
     func stop() {
