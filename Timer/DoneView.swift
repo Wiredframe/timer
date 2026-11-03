@@ -37,9 +37,9 @@ struct DoneView: View {
                 }
 
                 VStack(spacing: 6) {
-                    Text("Gute Arbeit!")
+                    Text("Great work!")
                         .font(.largeTitle.bold())
-                    Text("\(config.sets) Sets · \(mmss(config.total))")
+                    Text("\(config.sets) sets · \(mmss(config.total))")
                         .font(.title3.weight(.medium))
                         .monospacedDigit()
                         .opacity(0.8)
@@ -52,7 +52,7 @@ struct DoneView: View {
                 Spacer()
 
                 Button(action: onClose) {
-                    Text("Fertig")
+                    Text("Done")
                         .font(.title3.bold())
                         .foregroundStyle(Color(.systemBackground))
                         .frame(maxWidth: .infinity)

@@ -22,21 +22,21 @@ struct SetupView: View {
             ScrollView {
                 VStack(spacing: 16) {
                     card {
-                        ValueRow(title: "SETS", tint: .secondary, value: "\(sets)",
+                        ValueRow(title: String(localized: "SETS"), tint: .secondary, value: "\(sets)",
                                  canDecrease: sets > 1, canIncrease: sets < 99,
                                  decrease: { sets -= 1 }, increase: { sets += 1 })
                     }
 
                     card {
-                        ValueRow(title: "ARBEIT", tint: .brandText, value: mmss(work),
+                        ValueRow(title: String(localized: "WORK"), tint: .brandText, value: mmss(work),
                                  canDecrease: work > step, canIncrease: work < maxSeconds,
                                  decrease: { work -= step }, increase: { work += step })
                         Divider()
-                        ValueRow(title: "AUSRUHEN", tint: .restLabel, value: mmss(rest),
+                        ValueRow(title: String(localized: "REST"), tint: .restLabel, value: mmss(rest),
                                  canDecrease: rest > 0, canIncrease: rest < maxSeconds,
                                  decrease: { rest -= step }, increase: { rest += step })
                         Divider()
-                        Toggle("Letzte Pause überspringen", isOn: $skipLastRest)
+                        Toggle("Skip last rest", isOn: $skipLastRest)
                             .tint(.brand)
                             .disabled(rest == 0)
                             .padding(.horizontal, 20)
@@ -73,7 +73,7 @@ struct SetupView: View {
         Button { onStart(config) } label: {
             HStack(spacing: 14) {
                 Image(systemName: "play.fill")
-                Text("Workout starten")
+                Text("Start workout")
                     .lineLimit(1)
                 Spacer(minLength: 8)
                 Text(mmss(config.total))
@@ -114,7 +114,7 @@ private struct ValueRow: View {
                 .font(.subheadline.bold())
                 .foregroundStyle(tint)
             HStack {
-                stepButton("minus", label: "\(title.capitalized) verringern", enabled: canDecrease, action: decrease)
+                stepButton("minus", label: String(localized: "Decrease \(title.capitalized)"), enabled: canDecrease, action: decrease)
                 Spacer()
                 Text(value)
                     .font(.system(size: 44, weight: .bold))
@@ -125,7 +125,7 @@ private struct ValueRow: View {
                     .contentTransition(.numericText())
                     .animation(.snappy, value: value)
                 Spacer()
-                stepButton("plus", label: "\(title.capitalized) erhöhen", enabled: canIncrease, action: increase)
+                stepButton("plus", label: String(localized: "Increase \(title.capitalized)"), enabled: canIncrease, action: increase)
             }
         }
         .padding(.horizontal, 16)

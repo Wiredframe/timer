@@ -11,8 +11,10 @@
 		16E28D0EB28C9F6882879A33 /* RunView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 056A2772E4AF428ADC1DDBF5 /* RunView.swift */; };
 		465021F4DDC36220E786D4A2 /* SetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3AB7DFE64B700FFE98B742D /* SetupView.swift */; };
 		482E1349DDF20E9C54EF71A0 /* DoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16898BC48905B025BC034637 /* DoneView.swift */; };
+		4ADC0B757D3C5BFB0AF31F79 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 59EEA375DD568C489F051FBB /* PrivacyInfo.xcprivacy */; };
 		76135887C554D5016D477C1C /* WorkoutModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBB4D70073063E5C68F576DA /* WorkoutModel.swift */; };
 		B49AE2214E0F56D2F1164161 /* TimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E30E492A5BCE848618F4C56 /* TimerApp.swift */; };
+		CC337CA00F33E9C4A57923D9 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 68903EB73B07EF4DCD268A81 /* Localizable.xcstrings */; };
 		E0DFE34E2F43F3C9A1A51E65 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0DBC2A023BA4B71677E3F6 /* Theme.swift */; };
 		E527E16859D51E68E09D1156 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 88E31CA445EBE2228243F25B /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -22,7 +24,9 @@
 		16898BC48905B025BC034637 /* DoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneView.swift; sourceTree = "<group>"; };
 		2E30E492A5BCE848618F4C56 /* TimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerApp.swift; sourceTree = "<group>"; };
 		4F4BD86E7F14C153EFDDF91E /* SoundPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundPlayer.swift; sourceTree = "<group>"; };
+		59EEA375DD568C489F051FBB /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		661A08A0F49DD51B35A41DE5 /* Timer.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Timer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		68903EB73B07EF4DCD268A81 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		88E31CA445EBE2228243F25B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8E0DBC2A023BA4B71677E3F6 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		D3AB7DFE64B700FFE98B742D /* SetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupView.swift; sourceTree = "<group>"; };
@@ -45,6 +49,8 @@
 				88E31CA445EBE2228243F25B /* Assets.xcassets */,
 				16898BC48905B025BC034637 /* DoneView.swift */,
 				ED97CABD75181EE5DEA88486 /* Info.plist */,
+				68903EB73B07EF4DCD268A81 /* Localizable.xcstrings */,
+				59EEA375DD568C489F051FBB /* PrivacyInfo.xcprivacy */,
 				056A2772E4AF428ADC1DDBF5 /* RunView.swift */,
 				D3AB7DFE64B700FFE98B742D /* SetupView.swift */,
 				4F4BD86E7F14C153EFDDF91E /* SoundPlayer.swift */,
@@ -104,6 +110,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				Base,
+				de,
 				en,
 			);
 			mainGroup = 3D3D84E77A6B3FF7079EEFE5;
@@ -124,6 +131,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				E527E16859D51E68E09D1156 /* Assets.xcassets in Resources */,
+				CC337CA00F33E9C4A57923D9 /* Localizable.xcstrings in Resources */,
+				4ADC0B757D3C5BFB0AF31F79 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -182,7 +191,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 7RN999S858;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -202,7 +211,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -228,7 +237,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.wiredframe.Timer;
+				PRODUCT_BUNDLE_IDENTIFIER = de.wiredframe.timer;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -245,7 +254,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = de.wiredframe.Timer;
+				PRODUCT_BUNDLE_IDENTIFIER = de.wiredframe.timer;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -286,7 +295,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_STYLE = Automatic;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 7RN999S858;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -300,7 +309,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 27.0;
-				MARKETING_VERSION = 1.0.2;
+				MARKETING_VERSION = 1.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";

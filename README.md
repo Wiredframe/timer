@@ -29,7 +29,9 @@ A deliberately minimal Tabata and interval timer for iPhone. Set sets, work and 
 - **Keeps running with the screen locked**: time is measured against the clock, so it stays exact. The screen stays on during a workout, and is released again while paused.
 - **Light and dark mode**, following the system.
 
-The user interface is in German.
+The user interface is in English and German and follows the device language.
+
+Timer is coming to the App Store as **Plain Tabata Timer**, free, without ads or in-app purchases.
 
 ## Install
 

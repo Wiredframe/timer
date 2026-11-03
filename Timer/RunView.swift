@@ -85,19 +85,19 @@ struct RunView: View {
 
     private var title: String {
         switch kind {
-        case .prepare: "VORBEREITEN"
-        case .work: "ARBEIT \(model.current.set)/\(model.config.sets)"
-        case .rest: "AUSRUHEN \(model.current.set)/\(model.config.sets)"
+        case .prepare: String(localized: "PREPARE")
+        case .work: String(localized: "WORK \(model.current.set)/\(model.config.sets)")
+        case .rest: String(localized: "REST \(model.current.set)/\(model.config.sets)")
         }
     }
 
     private func topBar(at date: Date, fg: Color) -> some View {
         HStack {
-            squareButton("xmark", label: "Beenden", fg: fg, action: onClose)
+            squareButton("xmark", label: String(localized: "Stop"), fg: fg, action: onClose)
             Spacer()
             if !isPrepare {
                 VStack(spacing: 0) {
-                    Text("VERBLEIBEND")
+                    Text("REMAINING")
                         .font(.caption.bold())
                         .opacity(0.6)
                     Text(mmss(model.totalRemaining(at: date)))
@@ -107,7 +107,7 @@ struct RunView: View {
             }
             Spacer()
             squareButton(soundOn ? "speaker.wave.2.fill" : "speaker.slash.fill",
-                         label: soundOn ? "Ton aus" : "Ton an", fg: fg) { soundOn.toggle() }
+                         label: soundOn ? String(localized: "Sound off") : String(localized: "Sound on"), fg: fg) { soundOn.toggle() }
         }
         .padding(.horizontal, 20)
         .padding(.top, 8)
@@ -117,7 +117,7 @@ struct RunView: View {
     private func controls(fg: Color, pillText: Color) -> some View {
         if isPrepare {
             Button(action: model.skipForward) {
-                Text("Überspringen")
+                Text("Skip")
                     .font(.headline)
                     .frame(maxWidth: 240)
                     .frame(height: 60)
@@ -126,9 +126,9 @@ struct RunView: View {
             .buttonStyle(.plain)
         } else {
             HStack(spacing: 14) {
-                squareButton("chevron.backward.2", label: "Zurück", size: 64, fg: fg, action: model.skipBack)
+                squareButton("chevron.backward.2", label: String(localized: "Back"), size: 64, fg: fg, action: model.skipBack)
                 Button(action: model.togglePause) {
-                    Label(model.isPaused ? "Weiter" : "Pause",
+                    Label(model.isPaused ? "Resume" : "Pause",
                           systemImage: model.isPaused ? "play.fill" : "pause.fill")
                         .font(.title3.bold())
                         .foregroundStyle(pillText)
@@ -137,7 +137,7 @@ struct RunView: View {
                         .background(fg, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 }
                 .buttonStyle(.plain)
-                squareButton("chevron.forward.2", label: "Weiter", size: 64, fg: fg, action: model.skipForward)
+                squareButton("chevron.forward.2", label: String(localized: "Next"), size: 64, fg: fg, action: model.skipForward)
             }
         }
     }

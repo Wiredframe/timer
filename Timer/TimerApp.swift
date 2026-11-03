@@ -42,7 +42,14 @@ struct RootView: View {
             guard ProcessInfo.processInfo.arguments.contains("-demo") else { return }
             try? await Task.sleep(for: .seconds(1))
             sound.start()
-            workout = WorkoutModel(config: .init(sets: 2, work: 5, rest: 5, skipLastRest: true), sound: sound)
+            // Optional overrides for store screenshots, e.g. -demoSets 8 -demoWork 20 -demoRest 10.
+            let defaults = UserDefaults.standard
+            func value(_ key: String, _ fallback: Int) -> Int {
+                defaults.object(forKey: key) == nil ? fallback : defaults.integer(forKey: key)
+            }
+            let config = WorkoutConfig(sets: value("demoSets", 2), work: value("demoWork", 5),
+                                       rest: value("demoRest", 5), skipLastRest: true)
+            workout = WorkoutModel(config: config, sound: sound)
         }
         #endif
     }
